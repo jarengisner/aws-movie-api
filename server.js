@@ -11,7 +11,7 @@ http
     q = url.parse(addr, true);
 
     fs.appendFile(
-      'activity-log.txt',
+      __dirname + '/activity-log.txt',
       'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n',
       (err) => {
         if (err) {
