@@ -48,10 +48,6 @@ let myFavoriteMovies = [
 
 app.use(express.static('public'));
 app.use(morgan('common'));
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  console.log('Something went wrong!');
-});
 
 app.get('/movies', (req, res) => {
   res.json(myFavoriteMovies);
@@ -59,6 +55,11 @@ app.get('/movies', (req, res) => {
 
 app.get('/', (req, res) => {
   res.send('Welcome to my favorite movies!');
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
 app.listen(8080, () => {
