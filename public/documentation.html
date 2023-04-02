@@ -5,16 +5,103 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Movie Findr API Documentation</title>
 </head>
 
 <body>
-    <h1>Movie Findr API</h1>
-    <p>
+    <h1 class="docs-title">Movie Findr API</h1>
+    <p class="docs-intro">
         The Movie Findr API is a REST API that provides information about movies,
         which are stored on a database. The API can provide details about individual
         movies, and the actors in those films.
     </p>
+    <div class="endpoint-table">
+        <table>
+            <tr>
+                <th class="method">GET</th>
+                <th class="method">POST</th>
+                <th class="method">PUT</th>
+                <th class="method">DELETE</th>
+            </tr>
+            <tr>
+                <td class="endpoints">
+                    /movies/<br>
+                    /movies/:title<br>
+                    /movies/:actors<br>
+                    /movies/:director/<br>
+                    /movies/:genre/<br>
+                    /users/favorites/<br>
+                    /actors/<br>
+                    /direectors/<br>
+                    /actors/:name<br>
+                    /directors/:name<br></td>
+                <td class="endpoints">
+                    /users/register/<br>
+                    /users/favorites/<br>
+                </td>
+                <td class="endpoints">/users/:username/</td>
+                <td class="endpoints">
+                    /users/favorites/<br>
+                    /users/:username/
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Add more detail to these individual returns, including request parameters such as :name, then add expected format of request body data to those applicable-->
+    <div class="methods-details">
+        <h1 class="method-title">GET</h1>
+        <h2 class="url-title">/movies/</h2>
+        <p class="use-details">returns a list of all movies within the database in JSON format</p>
+        <h2 class="url-title">/movies/:title/</h2>
+        <p class="use-details">returns a list of all movies within the database, filtered by title in JSON format
+        </p>
+        <h2 class="url-title">/movies/:actors/</h2>
+        <p class="use-details">returns a list of all movies within the database, filtered by actors, in JSON format
+        </p>
+        <h2 class="url-title">/movies/:directors/</h2>
+        <p class="use-details">returns a list of all movies within the database, filtered by directors, in JSON
+            format
+        </p>
+        <h2 class="url-title">/movies/:genre/</h2>
+        <p class="use-details">returns a list of all movies within the database, filtered by genre, in JSON format
+        </p>
+        <h2 class="url-title">/users/favorites/</h2>
+        <p class="use-details">returns a list of all movies within the current users favorites, in JSON format</p>
+        <h2 class="url-title">/directors/</h2>
+        <p class="use-details">returns a list of all directors in the database, in JSON format</p>
+        <h2 class="url-title">/actors/</h2>
+        <p class="use-details">returns a list of all actors in the database, in JSON format</p>
+        <h2 class="url-title">/actors/:name/</h2>
+        <p class="use-details">returns a list of all actors within the database, filtered by name, in JSON format
+        </p>
+        <h2 class="url-title">/directors/:name/</h2>
+        <p class="use-details">returns a list of all directors in the database, filtered by name, in JSON format</p>
+    </div>
+    <div class="methods-details">
+        <h1 class="method-title">POST</h1>
+        <h2 class="url-title">/users/register/</h2>
+        <p class="use-details">Returns a confirmation of registration, along with an HTTP status of 200.</p>
+        <h2 class="url-title">/users/favorites/</h2>
+        <p class="use-details">Returns a confirmation that the movie was added to your favorites, with an HTTP
+            status of
+            200</p>
+    </div>
+    <div class="methods-details">
+        <h1 class="method-title">PUT</h1>
+        <h2 class="url-title">/users/:username</h2>
+        <p class="use-details">Returns confirmation of updated username, along with HTTP status code of 200</p>
+    </div>
+    <div class="methods-details">
+        <h1 class="method-title">DELETE</h1>
+        <h2 class="url-title">/users/favorites/</h2>
+        <p class="use-details">Returns confirmation of a favorite delete, and returns JSON of updated list of
+            favorites
+        </p>
+        <h2 class="url-title">/users/:username/</h2>
+        <p class="use-details">Returns confirmation that account was deleted, and HTTP status code of 200</p>
+    </div>
+
 </body>
 
 </html>
