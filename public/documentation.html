@@ -50,6 +50,14 @@
     </div>
     <!--Add more detail to these individual returns, including request parameters such as :name, then add expected format of request body data to those applicable-->
     <div class="methods-details">
+        <h1>Request Parameters</h1>
+        <p>All request parameters used in this API
+            accept strings as their value.</p>
+        <h1>Request Body</h1>
+        <p>Any data sent within a request body should be in <a
+                href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON" target="_blank">JSON
+                format</a>
+        </p>
         <h1 class="method-title">GET</h1>
         <h2 class="url-title">/movies/</h2>
         <p class="use-details">returns a list of all movies within the database in JSON format</p>
@@ -89,6 +97,7 @@
     </div>
     <div class="methods-details">
         <h1 class="method-title">PUT</h1>
+        <p>All data sent in a post request body must be sent in JSON format or XML</p>
         <h2 class="url-title">/users/:username</h2>
         <p class="use-details">Returns confirmation of updated username, along with HTTP status code of 200</p>
     </div>
