@@ -130,7 +130,13 @@ app.get('/movies/:genre', (req, res) => {
   );
 });
 
-app.get('/users/favorites/', (req, res) => {
+app.get('/users/:username/favorites', (req, res) => {
+  res.send(
+    'In the future this will send a list of the current users favorites list'
+  );
+});
+
+app.get('/users/:username/favorites/:title', (req, res) => {
   res.send(
     'In the future this will send a list of the current users favorites list'
   );
