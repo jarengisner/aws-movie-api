@@ -28,8 +28,8 @@ let userSchema = mongoose.Schema({
 });
 
 //pairs our collection name with our collection schema, telling our collection to follow this schema//
-let Movie = mongoose.model('movies', movieSchema);
-let User = mongoose.model('users', userSchema);
+let Movie = mongoose.model('Movie', movieSchema);
+let User = mongoose.model('User', userSchema);
 //exports our movie schema and our user schema, so that we can import them in other documents//
 module.exports.Movie = Movie;
 module.exports.User = User;

@@ -1,6 +1,19 @@
 const express = require('express');
-const app = express();
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 //list of my top 10 movies//
 let myFavoriteMovies = [
