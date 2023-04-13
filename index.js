@@ -104,74 +104,111 @@ app.use(morgan('common'));
 
 //GET Requests//
 app.get('/movies', (req, res) => {
-  res.json(myFavoriteMovies);
+  Movies.find()
+    .then((movie) => {
+      res.status(201).json(movie);
+    })
+    .catch((err) => {
+      res.status(500).send('Error : ' + err);
+    });
 });
 //Accepts a title as a request parameter, to filter movies//
 //Accepts a string//
-app.get('/movies/:title', (req, res) => {
-  res.json(
-    myFavoriteMovies.find((movie) => {
-      return movie.title === req.params.title;
+app.get('/movies/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.status(201).json(movie);
     })
-  );
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Error : ' + err);
+    });
 });
 //Accepts the name of an actor as a request parameter//
 //Accepts a string//
-app.get('/movies/:actor', (req, res) => {
-  res.json(
-    myFavoriteMovies.find((movie) => {
-      return movie.actors === req.params.actors;
+app.get('/movies/:Actors', (req, res) => {
+  Movies.findOne({ Actors: req.params.Actors })
+    .then((actor) => {
+      res.status(201).json(actor);
     })
-  );
+    .catch((err) => {
+      res.status(500).send('Error : ' + err);
+    });
 });
 //Accepts the name of a director as a request parameter//
 //Accepts a string//
-app.get('/movies/:directors', (req, res) => {
-  res.json(
-    myFavoriteMovies.find((movie) => {
-      return movie.directors === req.params.directors;
+app.get('/movies/:Directors', (req, res) => {
+  Movies.findOne({ Directors: req.params.Directors })
+    .then((director) => {
+      res.status(201).json(director);
     })
-  );
+    .catch((err) => {
+      res.status(500).send('Error : ' + err);
+    });
 });
 //Accepts a genre as a request parameter//
 //Accepts a string//
-app.get('/movies/:genre', (req, res) => {
-  res.json(
-    myFavoriteMovies.find((movie) => {
-      return movie.genre === req.params.genre;
+app.get('/movies/:Genre', (req, res) => {
+  Movies.findOne({ Genre: req.params.Genre })
+    .then((genre) => {
+      res.status(201).json(genre);
     })
-  );
+    .catch((err) => {
+      res.status(500).send('Error : ' + err);
+    });
 });
 
-app.get('/users/:username/favorites', (req, res) => {
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error :' + error);
+    });
+});
+
+app.get('/users/:Username', (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Error : ' + err);
+    });
+});
+
+/*app.get('/users/:username/favorites', (req, res) => {
   res.send(
     'In the future this will send a list of the current users favorites list'
   );
-});
+});*/
 
-app.get('/users/:username/favorites/:title', (req, res) => {
+/*app.get('/users/:username/favorites/:title', (req, res) => {
   res.send(
     'In the future this will send a list of the current users favorites list'
   );
-});
+});*/
 
-app.get('/directors', (req, res) => {
+/*app.get('/directors', (req, res) => {
   res.json(leadDirectors);
 });
 
 app.get('/actors', (req, res) => {
   res.json(leadActors);
-});
+});*/
 
 //accepts string for name//
-app.get('/directors/:name', (req, res) => {
+/*app.get('/directors/:name', (req, res) => {
   res.send('In the future will respond with all details about an director');
 });
 
 //accepts string for name//
 app.get('/actors/:name', (req, res) => {
   res.send('Will in the future respond with all details about an actor');
-});
+});*/
 
 //POST Requests//
 app.post('/users', (req, res) => {
