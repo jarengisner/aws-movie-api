@@ -174,8 +174,32 @@ app.get('/actors/:name', (req, res) => {
 });
 
 //POST Requests//
-app.post('/users/register', (req, res) => {
-  res.status(200).send('Working!');
+app.post('/users', (req, res) => {
+  Users.findOne({ username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists!');
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+            console.log('success');
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).send(error + 'error');
+          });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send(error + 'error');
+    });
 });
 
 app.post('/users/favorites', (req, res) => {
