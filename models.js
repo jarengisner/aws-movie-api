@@ -27,6 +27,22 @@ let userSchema = mongoose.Schema({
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'movies' }],
 });
 
+/*
+let actorSchema = mongoose.Schema({
+  Name: {type: String, required: true},
+  Bio: {type: String, required: true},
+  Birthday: Date,
+  ActsIn: [{type: mongoose.Schema.Types.ObjectId, ref: 'movies'}],
+})
+
+directorSchema = mongoose.Schema({
+  Name: {type: String, required: true},
+  Bio: {type: String, required: true},
+  Birthday: Date,
+  Directs: [{type: mongoose.Schema.Types.ObjectId, ref: 'movies'}],
+})
+*/
+
 //pairs our collection name with our collection schema, telling our collection to follow this schema//
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);

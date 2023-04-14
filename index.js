@@ -15,94 +15,16 @@ mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
   useUnifiedTopology: true,
 });
 
-//list of my top 10 movies//
-let myFavoriteMovies = [
-  {
-    Rank: 1,
-    title: 'Interstellar',
-    directors: 'Christopher Nolan',
-    actors: 'Matthew McConaughey',
-    genre: 'sci-fi',
-  },
-  {
-    rank: 2,
-    title: 'Shawshank Redemption',
-    directors: 'Frank Darabont',
-    actors: 'Tim Robbins',
-    genre: 'drama',
-  },
-  {
-    rank: 3,
-    title: 'Everything Everywhere All at Once',
-    directors: 'Daniel Kwan',
-    actors: 'Michelle Yeoh',
-    genre: 'drama',
-  },
-  {
-    rank: 4,
-    title: 'Spirited Away',
-    directors: 'Hayao Miyazaki',
-    actors: 'Rumi Hiiragi',
-    genre: 'action',
-  },
-  {
-    rank: 5,
-    title: 'Get Out',
-    directors: 'Jordan Peele',
-    actors: 'Daniel Kaluuya',
-    genre: 'horror',
-  },
-  {
-    rank: 6,
-    title: 'Midsommar',
-    directors: 'Ari Aster',
-    actors: 'Florence Pugh',
-    genre: 'horror',
-  },
-  {
-    rank: 7,
-    title: 'Joker',
-    directors: 'Todd Phillips',
-    actors: 'Joaquin Pheonix',
-    genre: 'drama',
-  },
-  {
-    rank: 8,
-    title: 'Life Aquatica',
-    directors: 'Wes Anderson',
-    actors: 'Bill Murray',
-    genre: 'comedy',
-  },
-  {
-    rank: 9,
-    title: 'Us',
-    directors: 'Jordan Peele',
-    actors: "Lupita Nyong'o",
-    genre: 'horror',
-  },
-  {
-    rank: 10,
-    title: 'Parasite',
-    directors: 'Bong Joon-Ho',
-    actors: 'Choi Woo-Shik',
-    genre: 'horror',
-  },
-];
-
-let leadActors = [];
-let leadDirectors = [];
-
-(function createLists() {
-  myFavoriteMovies.forEach((movie) => {
-    leadActors.push(movie.actors);
-    leadDirectors.push(movie.directors);
-  });
-})();
-
+//middleware for express and also the common morgan package//
 app.use(express.static('public'));
 app.use(morgan('common'));
 
 //GET Requests//
+//Home page, in future will send you to index page//
+app.get('/', (req, res) => {
+  res.send('this will lead to documentation');
+});
+
 app.get('/movies', (req, res) => {
   Movies.find()
     .then((movie) => {
@@ -124,23 +46,23 @@ app.get('/movies/:Title', (req, res) => {
       res.status(500).send('Error : ' + err);
     });
 });
-//Accepts the name of an actor as a request parameter//
-//Accepts a string//
+
+//Accepts an actors ObjectId as a parameter//
 app.get('/movies/:Actors', (req, res) => {
   Movies.findOne({ Actors: req.params.Actors })
-    .then((actor) => {
-      res.status(201).json(actor);
+    .then((movie) => {
+      res.status(201).json(movie);
     })
     .catch((err) => {
       res.status(500).send('Error : ' + err);
     });
 });
-//Accepts the name of a director as a request parameter//
-//Accepts a string//
+
+//Accepts a Directors ObjectID as a parameter//
 app.get('/movies/:Directors', (req, res) => {
   Movies.findOne({ Directors: req.params.Directors })
-    .then((director) => {
-      res.status(201).json(director);
+    .then((movie) => {
+      res.status(201).json(movie);
     })
     .catch((err) => {
       res.status(500).send('Error : ' + err);
@@ -180,17 +102,18 @@ app.get('/users/:Username', (req, res) => {
     });
 });
 
-/*app.get('/users/:username/favorites', (req, res) => {
-  res.send(
-    'In the future this will send a list of the current users favorites list'
-  );
-});*/
+app.get('/users/:username/favorites', (req, res) => {
+  Users.findOne({ Username: req.params.username })
+    .then((user) => {
+      res.json(user.favorites);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err + 'Error');
+    });
+});
 
-/*app.get('/users/:username/favorites/:title', (req, res) => {
-  res.send(
-    'In the future this will send a list of the current users favorites list'
-  );
-});*/
+//Need to create databases for Directors and Actors, to then make these URL endpoints work//
 
 /*app.get('/directors', (req, res) => {
   res.json(leadDirectors);
@@ -239,15 +162,48 @@ app.post('/users', (req, res) => {
     });
 });
 
-app.post('/users/favorites', (req, res) => {
-  res.status(200).send('Working!');
+app.post('/users/:username/movies/:movieId', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    {
+      $push: {
+        favorites: req.params.movieId,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err + 'error');
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
 //PUT Requests//
 //accepts string for users username//
 app.put('/users/:username', (req, res) => {
-  res.send(
-    'In future, application will accept new username through this request parameter'
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err + 'error');
+      } else {
+        res.json(updatedUser);
+      }
+    }
   );
 });
 
@@ -259,20 +215,27 @@ app.delete('/users/favorites/:title', (req, res) => {
 
 //accepts string as username of the user//
 app.delete('/users/:username', (req, res) => {
-  res.send(
-    'When users have availability to register, function will search to see if user is registered, and then delete the user.'
+  Users.findOneAndRemove(
+    { Username: req.params.username }
+      .then((user) => {
+        if (!user) {
+          res.send(req.params.username + 'was not found');
+        } else {
+          res.send(req.params.username + 'was deleted.');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send(err + 'error');
+      })
   );
 });
-//Home page, in future will send you to index page//
-app.get('/', (req, res) => {
-  res.send('Welcome to my favorite movies!');
-});
-
+//middleware that listens for any problems in booting up the server, and handles the error//
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
 
 app.listen(8080, () => {
-  console.log('Thee app is running on 8080');
+  console.log('The app is running on 8080');
 });
