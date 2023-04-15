@@ -162,17 +162,20 @@ app.post('/users', (req, res) => {
     });
 });
 
-app.post('/users/:username/movies/:movieId', (req, res) => {
-  Users.updateOne(
+app.put('/users/:username/movies/:movieId', (req, res) => {
+  Users.findOneAndUpdate(
     { username: req.params.username },
-    { $push: { favorites: req.params.movieId } }
-  );
+    { $push: { favorites: req.params.movieId } },
+    { new: true }
+  ).then((user) => {
+    res.status(201).json(user);
+  });
 });
 
 //PUT Requests//
 //accepts string for users username//
 app.put('/users/:username', (req, res) => {
-  Users.updateOne(
+  Users.findOneAndUpdate(
     { username: req.params.username },
     {
       $set: {
@@ -182,7 +185,13 @@ app.put('/users/:username', (req, res) => {
         birthday: req.body.birthday,
       },
     }
-  );
+  ).then((user) => {
+    if (!user) {
+      return res.status(500).send(req.params.username + 'not found');
+    } else {
+      res.json(user);
+    }
+  });
 });
 
 //DELETE//
