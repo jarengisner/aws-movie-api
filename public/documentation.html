@@ -28,89 +28,123 @@
                 <td class="endpoints">
                     /movies/<br>
                     /movies/:title<br>
-                    /movies/:actors<br>
                     /movies/:director/<br>
-                    /movies/:genre/<br>
-                    /users/favorites/<br>
-                    /actors/<br>
-                    /direectors/<br>
-                    /actors/:name<br>
-                    /directors/:name<br></td>
+                    /movies/:genreName/<br>
+                    /users/<br>
+                    /users/:username/favorites<br>
                 <td class="endpoints">
-                    /users/register/<br>
-                    /users/favorites/<br>
+                    /users<br>
                 </td>
-                <td class="endpoints">/users/:username/</td>
+                <td class="endpoints">/users/:username/<br>
+                    /users/:username/favorites/:genreId
+                </td>
                 <td class="endpoints">
-                    /users/favorites/<br>
-                    /users/:username/
+                    /users/:username/movies/:genreId<br>
+                    /users/:username
                 </td>
             </tr>
         </table>
     </div>
     <!--Add more detail to these individual returns, including request parameters such as :name, then add expected format of request body data to those applicable-->
-    <div class="methods-details">
-        <h1>Request Parameters</h1>
-        <p>All request parameters used in this API
-            accept strings as their value.</p>
-        <h1>Request Body</h1>
-        <p>Any data sent within a request body should be in <a
-                href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON" target="_blank">JSON
-                format</a>
+    <div class="request-infortmation">
+        <h2>GET REQUESTS</h2>
+        <p>
+            All GET requests send to the database pull information about different movies or users.
         </p>
-        <h1 class="method-title">GET</h1>
-        <h2 class="url-title">/movies/</h2>
-        <p class="use-details">returns a list of all movies within the database in JSON format</p>
-        <h2 class="url-title">/movies/:title/</h2>
-        <p class="use-details">returns a list of all movies within the database, filtered by title in JSON format
+        <p>
+            All GET requests accept a string parameter.
         </p>
-        <h2 class="url-title">/movies/:actors/</h2>
-        <p class="use-details">returns a list of all movies within the database, filtered by actors, in JSON format
+        <h3>/movies</h3>
+        <p>
+            The request to <span class="code-piece">/movies</span> does not accept any parameters and will return JSON
+            data of all movies
+            in the database.
         </p>
-        <h2 class="url-title">/movies/:directors/</h2>
-        <p class="use-details">returns a list of all movies within the database, filtered by directors, in JSON
-            format
+        <h3>/movies/:title</h3>
+        <p>
+            The request to <span class="code-piece">/movies/:title</span> accepts a string that is the title of the
+            movie, and will return
+            JSON data containing information about that specific movie.
         </p>
-        <h2 class="url-title">/movies/:genre/</h2>
-        <p class="use-details">returns a list of all movies within the database, filtered by genre, in JSON format
+        <h3>/movies/:director</h3>
+        <p>
+            Requests to <span class="code-piece">/movies/:director</span> accept a string that is a directors full name.
+            This will return
+            all movies made by that director.
         </p>
-        <h2 class="url-title">/users/favorites/</h2>
-        <p class="use-details">returns a list of all movies within the current users favorites, in JSON format</p>
-        <h2 class="url-title">/directors/</h2>
-        <p class="use-details">returns a list of all directors in the database, in JSON format</p>
-        <h2 class="url-title">/actors/</h2>
-        <p class="use-details">returns a list of all actors in the database, in JSON format</p>
-        <h2 class="url-title">/actors/:name/</h2>
-        <p class="use-details">returns a list of all actors within the database, filtered by name, in JSON format
+        <h3>/movies/:genreName</h3>
+        <p>Requests made to <span class="code-piece">/movies/:genreName</span> accept a string that is the name of a
+            genre. This will
+            return all movies with that genre name.</p>
+        <h3>/users</h3>
+        <p>
+            Requests made to <span class="code-piece">/users</span> will return a list of all users registered to the
+            application.
         </p>
-        <h2 class="url-title">/directors/:name/</h2>
-        <p class="use-details">returns a list of all directors in the database, filtered by name, in JSON format</p>
+        <h3>/users/:username/favorites</h3>
+        <p>
+            Requests made to <span class="code-piece">/users/:username/favorites</span> will accept a string in the form
+            of a users
+            username, and will return that users list of favorites.
+        </p>
     </div>
-    <div class="methods-details">
-        <h1 class="method-title">POST</h1>
-        <h2 class="url-title">/users/register/</h2>
-        <p class="use-details">Returns a confirmation of registration, along with an HTTP status of 200.</p>
-        <h2 class="url-title">/users/favorites/</h2>
-        <p class="use-details">Returns a confirmation that the movie was added to your favorites, with an HTTP
-            status of
-            200</p>
-    </div>
-    <div class="methods-details">
-        <h1 class="method-title">PUT</h1>
-        <p>All data sent in a post request body must be sent in JSON format or XML</p>
-        <h2 class="url-title">/users/:username</h2>
-        <p class="use-details">Returns confirmation of updated username, along with HTTP status code of 200</p>
-    </div>
-    <div class="methods-details">
-        <h1 class="method-title">DELETE</h1>
-        <h2 class="url-title">/users/favorites/</h2>
-        <p class="use-details">Returns confirmation of a favorite delete, and returns JSON of updated list of
-            favorites
+    <div class="request-infortmation">
+        <h2>POST REQUESTS</h2>
+        <p>
+            All POST Requests made to the database are used to create information in the database.
         </p>
-        <h2 class="url-title">/users/:username/</h2>
-        <p class="use-details">Returns confirmation that account was deleted, and HTTP status code of 200</p>
+        <h3>/users</h3>
+        <p>Post Requests made to <span class="code-piece">/users</span> are to create a new user.</p>
+        <p>Requests made to this endpoint accept a JSON object as the request body</p>
+        <img src="img/post1.png">
     </div>
-
+    <div class="request-infortmation">
+        <h2>PUT REQUESTS</h2>
+        <p>
+            All PUT Requests made to the database are used to update information in the database.
+        </p>
+        <h3>/users/:username</h3>
+        <p>PUT requests made to <span class="code-piece">/users/:username</span> are used to update a user.</p>
+        <p>Requests made to this endpoint accept a JSON object as the request body, with updates applied. Only keys that
+            are set in the JSON body to their new value will be updated, and the rest will retain the original value</p>
+        <img src="img/put1.png">
+        <h3>/users/:username/movies/:movieId</h3>
+        <p>PUT requests made to <span class="code-piece">/users/:username/movies/:movieId</span> are used to update a
+            users favorite movies
+        </p>
+        <p>Requests made to this endpoint accept two request parameters. <span class="code-piece">:username</span>
+            accepts a string for a
+            users username, and <span class="code-piece">:movieId</span> accepts the ObjectId number for a single movie.
+        </p>
+        <p>An example request would be
+            <span class="code-piece">http://localhost:8080/users/jarengisner/movies/6433341215d053c0a3b83f4e</span>
+        </p>
+        <p>A JSON object of the updated user with the new movie added to their favorites would be returned if successful
+        </p>
+        <img src="img/put2.png">
+    </div>
+    <div class="request-infortmation">
+        <h2>DELETE REQUESTS</h2>
+        <p>DELETE Requests to the database delete a piece of data</p>
+        <h3>/users/:username/movies/:movieId</h3>
+        <p>A DELETE request to the <span class="code-piece">/users/:username/movies/:movieId</span> endpoint will remove
+            a movie from a
+            users favorites</p>
+        <p>Requests made to this endpoint accept two request parameters. <span class="code-piece">:username</span>
+            accepts a string for a
+            users username, and <span class="code-piece">:movieId</span> accepts the ObjectId number for a single movie.
+        </p>
+        <p>The response will return a JSON object for the user with the requested movie removed, confirming it's removal
+        </p>
+        <img src="img/delete1.png">
+        <h3>/users/:username</h3>
+        <p>A DELETE request to the <span class="code-piece">/users/:username</span> endpoint will remove a movie from a
+            users favorites</p>
+        <p>Requests made to this endpoint accept one request parameter. <span class="code-piece">:username</span>
+            accepts a string for a
+            users username</p>
+        <p>The response will return confirmation that the user was deleted if successful</p>
+    </div>
 </body>
 
 </html>
