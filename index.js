@@ -163,23 +163,11 @@ app.post('/users', (req, res) => {
 });
 
 app.post('/users/:username/movies/:movieId', (req, res) => {
-  Users.findOneAndUpdate(
+  Users.updateOne(
     { Username: req.params.username },
-    {
-      $push: {
-        favorites: req.params.movieId,
-      },
-    },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err + 'error');
-      } else {
-        res.json(updatedUser);
-      }
-    }
+    { $push: { favorites: req.params.movieId } }
   );
+  res.status(201).send('Update Successful');
 });
 
 //PUT Requests//
