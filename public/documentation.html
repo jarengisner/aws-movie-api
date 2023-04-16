@@ -66,16 +66,26 @@
             movie, and will return
             JSON data containing information about that specific movie.
         </p>
-        <h3>/movies/:director</h3>
+        <h3>/movies/directors/:director</h3>
         <p>
             Requests to <span class="code-piece">/movies/:director</span> accept a string that is a directors full name.
             This will return
             all movies made by that director.
         </p>
-        <h3>/movies/:genreName</h3>
+        <h3>/movies/genres/:genreName</h3>
         <p>Requests made to <span class="code-piece">/movies/:genreName</span> accept a string that is the name of a
             genre. This will
             return all movies with that genre name.</p>
+        <h3>/movies/actors/:Actors</h3>
+        <p>Requests made to <span class="code-piece">/movies/actors/:Actors</span> accept a string that is the ObjectId
+            of an actor This will
+            return all movies with that actor in them.</p>
+        <h3>/actors</h3>
+        <p>
+            The request to <span class="code-piece">/actors</span> does not accept any parameters and will return JSON
+            data of all actors
+            in the database.
+        </p>
         <h3>/users</h3>
         <p>
             Requests made to <span class="code-piece">/users</span> will return a list of all users registered to the

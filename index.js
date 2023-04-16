@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const Movies = Models.Movie;
 const Users = Models.User;
+const Actors = Models.Actor;
 
 mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
   useNewUrlParser: true,
@@ -48,18 +49,18 @@ app.get('/movies/:Title', (req, res) => {
 });
 
 //Accepts an actors ObjectId as a parameter//
-/*app.get('/movies/:Actors', (req, res) => {
-  Movies.findOne({ Actors: req.params.Actors })
+app.get('/movies/actors/:Actors', (req, res) => {
+  Movies.findOne({ Actors: [req.params.Actors] })
     .then((movie) => {
       res.status(201).json(movie);
     })
     .catch((err) => {
       res.status(500).send('Error : ' + err);
     });
-});*/
+});
 
 //Accepts a Directors ObjectID as a parameter//
-app.get('/movies/:Directors', (req, res) => {
+app.get('/movies/directors/:Directors', (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.Directors })
     .then((movie) => {
       res.status(201).json(movie);
@@ -70,13 +71,24 @@ app.get('/movies/:Directors', (req, res) => {
 });
 //Accepts a genre as a request parameter//
 //Accepts a string//
-app.get('/movies/:genreName', (req, res) => {
-  Movies.findMany({ 'Genre.Name': req.params.genreName })
+app.get('/movies/genres/:genreName', (req, res) => {
+  Movies.findOne({ 'Genre.Name': req.params.genreName })
     .then((movie) => {
       res.json(movie);
     })
     .catch((err) => {
       res.status(500).send('Error : ' + err);
+    });
+});
+
+//Actors//
+app.get('/actors', (req, res) => {
+  Actors.find()
+    .then((actor) => {
+      res.status(201).json(actor);
+    })
+    .catch((err) => {
+      res.status(500).send(err + 'error');
     });
 });
 
@@ -187,26 +199,23 @@ app.delete('/users/:username/movies/:movieId', (req, res) => {
     { new: true }
   ).then((user) => {
     res.status(201).json(user);
-    res.send('Movie was removed from favorites');
   });
 });
 
 //accepts string as username of the user//
 app.delete('/users/:username', (req, res) => {
-  Users.findOneAndRemove(
-    { username: req.params.username }
-      .then((user) => {
-        if (!user) {
-          res.send(req.params.username + 'was not found');
-        } else {
-          res.send(req.params.username + 'was deleted.');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send(err + 'error');
-      })
-  );
+  Users.findOneAndRemove({ username: req.params.username })
+    .then((user) => {
+      if (!user) {
+        res.send(req.params.username + 'was not found');
+      } else {
+        res.send(req.params.username + 'was deleted.');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err + 'error');
+    });
 });
 //middleware that listens for any problems in booting up the server, and handles the error//
 app.use((err, req, res, next) => {
