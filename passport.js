@@ -10,8 +10,8 @@ let Users = Models.User,
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'Username',
-      passwordField: 'Password',
+      usernameField: 'username',
+      passwordField: 'password',
     },
     (username, password, callback) => {
       console.log(username + '  ' + password);
@@ -30,7 +30,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'your_jwt_secret',
+      secretOrKey: 'Super Secret',
     },
     (jwtPayload, callback) => {
       return Users.findById(jwtPayload._id)
