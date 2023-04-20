@@ -6,6 +6,9 @@ const Models = require('./models.js');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
