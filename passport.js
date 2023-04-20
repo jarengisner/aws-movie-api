@@ -10,20 +10,21 @@ let Users = Models.User,
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'username',
-      passwordField: 'password',
+      usernameField: 'Username',
+      passwordField: 'Password',
     },
     (username, password, callback) => {
-      console.log(username + '' + password);
-      Users.findOne({ username: username }, (err, user) => {
-        if (err) {
-          console.log(err);
-          return callback(err);
+      console.log(username + '  ' + password);
+      Users.findOne({ Username: username }, (error, user) => {
+        if (error) {
+          console.log(error);
+          return callback(error);
         }
+
         if (!user) {
           console.log('incorrect username');
           return callback(null, false, {
-            message: 'Incorrect username or password',
+            message: 'Incorrect username or password.',
           });
         }
 
@@ -38,15 +39,15 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'Super Secret',
+      secretOrKey: 'your_jwt_secret',
     },
     (jwtPayload, callback) => {
       return Users.findById(jwtPayload._id)
         .then((user) => {
           return callback(null, user);
         })
-        .catch((err) => {
-          return callback(err);
+        .catch((error) => {
+          return callback(error);
         });
     }
   )

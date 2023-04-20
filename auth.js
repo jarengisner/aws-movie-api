@@ -3,13 +3,13 @@ const jwtSecret = 'Super Secret';
 const jwt = require('jsonwebtoken'),
   passport = require('passport');
 
-require('./passport.js');
+require('./passport');
 
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
-    subject: User.username,
+    subject: user.Username,
     expiresIn: '7d',
-    algorith: 'HS256',
+    algorithm: 'HS256',
   });
 };
 
@@ -17,8 +17,8 @@ module.exports = (router) => {
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
       if (error || !user) {
-        res.status(400).json({
-          message: 'Something went wrong',
+        return res.status(400).json({
+          message: 'Something is not right',
           user: user,
         });
       }

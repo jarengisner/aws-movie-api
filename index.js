@@ -29,15 +29,19 @@ app.get('/', (req, res) => {
   res.send('this will lead to documentation');
 });
 
-app.get('/movies', (req, res) => {
-  Movies.find()
-    .then((movie) => {
-      res.status(201).json(movie);
-    })
-    .catch((err) => {
-      res.status(500).send('Error : ' + err);
-    });
-});
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then((movie) => {
+        res.status(201).json(movie);
+      })
+      .catch((err) => {
+        res.status(500).send('Error : ' + err);
+      });
+  }
+);
 //Accepts a title as a request parameter, to filter movies//
 //Accepts a string//
 app.get('/movies/:Title', (req, res) => {
@@ -107,7 +111,7 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/users/:username', (req, res) => {
-  Users.findOne({ username: req.params.username })
+  Users.findOne({ Username: req.params.username })
     .then((user) => {
       res.json(user);
     })
@@ -118,7 +122,7 @@ app.get('/users/:username', (req, res) => {
 });
 
 app.get('/users/:username/favorites', (req, res) => {
-  Users.findOne({ username: req.params.username })
+  Users.findOne({ Username: req.params.username })
     .then((user) => {
       res.json(user.favorites);
     })
@@ -130,7 +134,7 @@ app.get('/users/:username/favorites', (req, res) => {
 
 //POST Requests//
 app.post('/users', (req, res) => {
-  Users.findOne({ username: req.body.Username })
+  Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists!');
@@ -160,8 +164,8 @@ app.post('/users', (req, res) => {
 //PUT Requests//
 app.put('/users/:username/movies/:movieId', (req, res) => {
   Users.findOneAndUpdate(
-    { username: req.params.username },
-    { $push: { favorites: req.params.movieId } },
+    { Username: req.params.username },
+    { $push: { Favorites: req.params.movieId } },
     { new: true }
   ).then((user) => {
     res.status(201).json(user);
@@ -171,7 +175,7 @@ app.put('/users/:username/movies/:movieId', (req, res) => {
 //accepts string for users username//
 app.put('/users/:username', (req, res) => {
   Users.findOneAndUpdate(
-    { username: req.params.username },
+    { Username: req.params.username },
     {
       $set: {
         username: req.body.username,
@@ -193,7 +197,7 @@ app.put('/users/:username', (req, res) => {
 //accepts string as title of the movie//
 app.delete('/users/:username/movies/:movieId', (req, res) => {
   Users.findOneAndUpdate(
-    { username: req.params.username },
+    { Username: req.params.username },
     {
       $pull: {
         favorites: req.params.movieId,
@@ -207,7 +211,7 @@ app.delete('/users/:username/movies/:movieId', (req, res) => {
 
 //accepts string as username of the user//
 app.delete('/users/:username', (req, res) => {
-  Users.findOneAndRemove({ username: req.params.username })
+  Users.findOneAndRemove({ Username: req.params.username })
     .then((user) => {
       if (!user) {
         res.send(req.params.username + 'was not found');
