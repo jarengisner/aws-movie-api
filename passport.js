@@ -13,15 +13,29 @@ passport.use(
       usernameField: 'Username',
       passwordField: 'Password',
     },
-    (username, password, callback) => {
-      console.log(username + '  ' + password);
-      Users.findOne({ Username: username })
-        .then((user) => callback(null, user))
-        .catch((e) =>
-          callback(null, false, { message: 'Incorrect username or password.' })
-        );
-      console.log('finished');
-      //return callback(null, user);
+    //Used async await because I feel like it simplified writing this//
+    async (username, password, callback) => {
+      console.log(username + ' ' + password);
+      try {
+        const user = await Users.findOne({ Username: username });
+        //checks is the user exists in the db//
+        if (!user) {
+          console.log('incorrect username');
+          return callback(null, false, { message: 'Incorrect Username' });
+        }
+        //uses our validate password method which checks hashed password against db storage//
+        //Our password we input is already hashed and compared when we send our login request, due to calling authenticate//
+        if (!user.validatePassword(password)) {
+          console.log('incorrect password');
+          return callback(null, false, { message: 'Incorrect password' });
+        }
+        //if none of the above are the case, this runs//
+        console.log('It worked');
+        return callback(null, user);
+      } catch (error) {
+        console.log(error);
+        return callback(error);
+      }
     }
   )
 );

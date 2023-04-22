@@ -1,5 +1,6 @@
 //requires mongoose, importing it's functionality into this file//
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 //sets schema for our movie data//
 //sets our key value pairs with some controls for what data type they accept//
@@ -33,6 +34,15 @@ let userSchema = mongoose.Schema({
   Birthday: Date,
   Favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'movies' }],
 });
+//creates methods for hashing password//
+userSchema.statics.hashPassword = (password) => {
+  return bcrypt.hashSync(password, 10);
+};
+//creates method on user object for validating the password//
+userSchema.methods.validatePassword = function (password) {
+  //Here is where our password input is hashed when logging in and compared to the stored hashed password//
+  return bcrypt.compare(password, this.password);
+};
 
 //pairs our collection name with our collection schema, telling our collection to follow this schema//
 let Movie = mongoose.model('Movie', movieSchema);

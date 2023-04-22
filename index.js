@@ -183,37 +183,36 @@ app.get(
 );
 
 //POST Requests//
-app.post(
-  '/users',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) {
-          return res.status(400).send(req.body.Username + 'already exists!');
-        } else {
-          Users.create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
+app.post('/users', (req, res) => {
+  //hashes our password and assigns it to this variable//
+  let hashedPass = Users.hashPassword(req.body.Password);
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists!');
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          //our password is now created with our hashed password instead of our raw string//
+          Password: hashedPass,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+            console.log('success');
           })
-            .then((user) => {
-              res.status(201).json(user);
-              console.log('success');
-            })
-            .catch((error) => {
-              console.log(error);
-              res.status(500).send(error + 'error');
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        res.status(500).send(error + 'error');
-      });
-  }
-);
+          .catch((error) => {
+            console.log(error);
+            res.status(500).send(error + 'error');
+          });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send(error + 'error');
+    });
+});
 
 //PUT Requests//
 app.put(
