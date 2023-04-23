@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const { check, validationResult } = require('express-validator');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -183,36 +184,52 @@ app.get(
 );
 
 //POST Requests//
-app.post('/users', (req, res) => {
-  //hashes our password and assigns it to this variable//
-  let hashedPass = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists!');
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          //our password is now created with our hashed password instead of our raw string//
-          Password: hashedPass,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => {
-            res.status(201).json(user);
-            console.log('success');
+app.post(
+  '/users',
+  check('Username', 'Username is required').isLength({ min: 5 }),
+  check(
+    'Username',
+    'Username contains non-Alphanumeric characters'
+  ).isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Valid Email Address is required').isEmail(),
+  (req, res) => {
+    //validation error handling function//
+    let errors = validationResult(req);
+    //if errors.isEmpty is not true, meaning if there are errors//
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    //hashes our password and assigns it to this variable//
+    let hashedPass = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + 'already exists!');
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            //our password is now created with our hashed password instead of our raw string//
+            Password: hashedPass,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
           })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).send(error + 'error');
-          });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send(error + 'error');
-    });
-});
+            .then((user) => {
+              res.status(201).json(user);
+              console.log('success');
+            })
+            .catch((error) => {
+              console.log(error);
+              res.status(500).send(error + 'error');
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(error + 'error');
+      });
+  }
+);
 
 //PUT Requests//
 app.put(
