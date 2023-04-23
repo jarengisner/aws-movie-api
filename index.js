@@ -1,12 +1,21 @@
+//imports express//
 const express = require('express');
+//imports morgan//
 const morgan = require('morgan');
+//imports body parser to be able to parse req bodies//
 const bodyParser = require('body-parser');
+//imports mongoose//
 const mongoose = require('mongoose');
+//imports our models file//
 const Models = require('./models.js');
+//imports our validation functinoality from express validator//
 const { check, validationResult } = require('express-validator');
+//declares our express application//
 const app = express();
+//body parser middleware//
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+//imports cors (cross origin requests)//
 const cors = require('cors');
 app.use(cors());
 
@@ -26,13 +35,16 @@ app.use(cors({
 }));*/
 
 let auth = require('./auth.js')(app);
+//imports passport//
 const passport = require('passport');
 require('./passport.js');
 
+//declares variables for our models//
 const Movies = Models.Movie;
 const Users = Models.User;
 const Actors = Models.Actor;
 
+//connects the application to our mongodb database//
 mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -45,7 +57,7 @@ app.use(morgan('common'));
 //GET Requests//
 //Home page, in future will send you to index page//
 app.get('/', (req, res) => {
-  res.send('this will lead to documentation');
+  res.send('This will lead to landing home page eventually');
 });
 
 app.get(
@@ -137,7 +149,7 @@ app.get(
       });
   }
 );
-
+//get all users//
 app.get(
   '/users',
   passport.authenticate('jwt', { session: false }),
@@ -152,7 +164,7 @@ app.get(
       });
   }
 );
-
+//get user by username//
 app.get(
   '/users/:username',
   passport.authenticate('jwt', { session: false }),
@@ -167,7 +179,7 @@ app.get(
       });
   }
 );
-
+//GET users favorites by username//
 app.get(
   '/users/:username/favorites',
   passport.authenticate('jwt', { session: false }),
@@ -249,14 +261,31 @@ app.put(
 //accepts string for users username//
 app.put(
   '/users/:username',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate(
+    'jwt',
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non-Alphanumeric characters'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Valid Email Address is required').isEmail(),
+    { session: false }
+  ),
   (req, res) => {
+    //validation error handling function//
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    //variable for updated hashed password//
+    let updatedHashedPassword = Users.hashPassword(req.body.Password);
     Users.updateOne(
       { Username: req.params.username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: updatedHashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
@@ -316,6 +345,8 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
-app.listen(8080, () => {
-  console.log('The app is running on 8080');
+//added new listen function to pull a port from the ENV variable, and if one is not found, to default to 8080?//
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
