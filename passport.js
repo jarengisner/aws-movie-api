@@ -1,4 +1,6 @@
+//requires passport for authentication//
 const passport = require('passport'),
+  //imports local strategy authentication//
   LocalStrategy = require('passport-local').Strategy,
   Models = require('./models.js'),
   passportJWT = require('passport-jwt');
@@ -7,6 +9,7 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
+//uses the passport middleware we imported to create a new strategy from the local strategy library//
 passport.use(
   new LocalStrategy(
     {

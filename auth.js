@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken'),
   passport = require('passport');
 
 require('./passport');
-
+//declares function we will return to pass token to the user//
+//user is a parameter passed from the login function below//
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
