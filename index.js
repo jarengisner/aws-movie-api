@@ -45,7 +45,12 @@ const Users = Models.User;
 const Actors = Models.Actor;
 
 //connects the application to our mongodb database//
-mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
+/*mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});*/
+//Code that connects to our actual database//
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
