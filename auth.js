@@ -1,4 +1,6 @@
-const jwtSecret = 'Super Secret';
+const myKey = require('./key.js');
+const mySecretKey = myKey.secretKey;
+const jwtSecret = mySecretKey;
 
 const jwt = require('jsonwebtoken'),
   passport = require('passport');

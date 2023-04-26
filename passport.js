@@ -5,6 +5,9 @@ const passport = require('passport'),
   Models = require('./models.js'),
   passportJWT = require('passport-jwt');
 
+const myKey = require('./key.js');
+const mySecretKey = myKey.secretKey;
+
 let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
@@ -47,7 +50,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'Super Secret',
+      secretOrKey: mySecretKey,
     },
     (jwtPayload, callback) => {
       return Users.findById(jwtPayload._id)
