@@ -35,25 +35,11 @@ const Actors = Models.Actor;
   useUnifiedTopology: true,
 });*/
 //Code that connects to our actual database//
-const uriLink = process.env.CONNECTION_URI;
-console.log(uriLink);
 
-async function connectionFunction() {
-  try {
-    await mongoose.connect(uriLink, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('connected to' + '' + uriLink);
-  } catch (err) {
-    console.log('Error in db connection' + err);
-  }
-}
-connectionFunction();
-/*mongoose.connect(process.env.CONNECTION_URI, {
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});*/
+});
 
 //middleware for express and also the common morgan package//
 app.use(express.static('public'));
