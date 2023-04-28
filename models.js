@@ -41,8 +41,17 @@ userSchema.statics.hashPassword = (password) => {
 //creates method on user object for validating the password//
 userSchema.methods.validatePassword = function (password) {
   //Here is where our password input is hashed when logging in and compared to the stored hashed password//
+  console.log(this.password);
   return bcrypt.compare(password, this.password);
 };
+/*Could this work:
+userSchema.methods.validatePassword = async function(password){
+  try{
+    await bcrypt.compare(password, this.Password)
+  }catch(error){
+    console.log(error);
+  }
+}*/
 
 //pairs our collection name with our collection schema, telling our collection to follow this schema//
 let Movie = mongoose.model('Movie', movieSchema);
