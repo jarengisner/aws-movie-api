@@ -41,8 +41,8 @@ userSchema.statics.hashPassword = (password) => {
 //creates method on user object for validating the password//
 userSchema.methods.validatePassword = function (password) {
   //Here is where our password input is hashed when logging in and compared to the stored hashed password//
-  console.log(this.password);
-  return bcrypt.compare(password, this.password);
+  console.log(this.Password);
+  return bcrypt.compare(password, this.Password);
 };
 /*Could this work:
 userSchema.methods.validatePassword = async function(password){
