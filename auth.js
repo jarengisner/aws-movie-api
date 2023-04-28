@@ -22,11 +22,13 @@ module.exports = (router) => {
       /*callback*/ (error, user, info) => {
         //The above is our callback referred to from passport.js, determines what happens when our passport checks fail when authenticating with our local strategy//
         if (error || !user) {
+          console.log(error);
           return res.status(400).json({
             message: 'Something is not right',
-            user: user,
+            //user: user,
           });
         }
+        //if(error || !user){return res.status(400).json({message: 'Something is not right', user})}
         req.login(user, { session: false }, (error) => {
           if (error) {
             res.send(error);
