@@ -51,19 +51,15 @@ app.get('/', (req, res) => {
   res.send('This will lead to landing home page eventually');
 });
 
-app.get(
-  '/movies',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Movies.find()
-      .then((movie) => {
-        res.status(201).json(movie);
-      })
-      .catch((err) => {
-        res.status(500).send('Error : ' + err);
-      });
-  }
-);
+app.get('/movies', (req, res) => {
+  Movies.find()
+    .then((movie) => {
+      res.status(201).json(movie);
+    })
+    .catch((err) => {
+      res.status(500).send('Error : ' + err);
+    });
+});
 //Accepts a title as a request parameter, to filter movies//
 //Accepts a string//
 app.get(
