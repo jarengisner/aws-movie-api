@@ -48,7 +48,7 @@ app.use(morgan('common'));
 //GET Requests//
 //Home page, in future will send you to index page//
 app.get('/', (req, res) => {
-  res.send('This will lead to landing home page eventually');
+  res.send('Currently a test page');
 });
 
 app.get(
