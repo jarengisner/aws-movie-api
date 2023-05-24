@@ -26,6 +26,7 @@ passport.use(
           console.log('incorrect username');
           return callback(null, false, { message: 'Incorrect Username' });
         }
+        console.log(user.validatePassword(password));
         //uses our validate password method which checks hashed password against db storage//
         //Our password we input is already hashed and compared when we send our login request, due to calling authenticate//
         if (user.validatePassword(password) === false) {
