@@ -28,7 +28,7 @@ passport.use(
         }
         //uses our validate password method which checks hashed password against db storage//
         //Our password we input is already hashed and compared when we send our login request, due to calling authenticate//
-        if (user.validatePassword(password) !== user.Password) {
+        if (!user.validatePassword(password)) {
           console.log('incorrect password');
           return callback(null, false, { message: 'Incorrect password' });
         }
