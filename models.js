@@ -42,6 +42,7 @@ userSchema.statics.hashPassword = (password) => {
 userSchema.methods.validatePassword = function (password) {
   //Here is where our password input is hashed when logging in and compared to the stored hashed password//
   console.log(this.Password);
+  console.log(password);
   return bcrypt.compare(password, this.Password);
 };
 /*Could this work:
