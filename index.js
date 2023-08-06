@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 /**
  * GET request to get all movies from the database
  * @async
- * @returns {Promise<Array>} Data from database
+ * @returns {Promise} Array of all movies within the database
  */
 app.get(
   '/movies',
@@ -72,7 +72,7 @@ app.get(
  * GET request to get a movie by Title
  * @async
  * @param {string} Title
- * @returns {Promise<Object>} movie object from database
+ * @returns {Promise} movie object from database
  */
 app.get(
   '/movies/:Title',
@@ -111,7 +111,7 @@ app.get(
  * GET request to get a movie by Director
  * @async
  * @param {string} Directors
- * @returns {Promise<Object>} movie object from database
+ * @returns {Promise} movie object from database
  */
 app.get(
   '/movies/directors/:Directors',
@@ -133,7 +133,7 @@ app.get(
  * GET request to get a movie by Genre Name
  * @async
  * @param {string} genreName
- * @returns {Promise<Object>} movie object from database
+ * @returns {Promise} movie object from database
  */
 app.get(
   '/movies/genres/:genreName',
@@ -168,7 +168,7 @@ app.get(
 /**
  * GET request to get all users
  * @async
- * @returns {Promise<Array>} user data from database
+ * @returns {Promise} user data from database
  */
 app.get(
   '/users',
@@ -190,7 +190,7 @@ app.get(
  * GET request to get a user by their username
  * @async
  * @param {string} username
- * @returns {Promise<Object>} the user's data from the database
+ * @returns {Promise} the user's data from the database
  */
 app.get(
   '/users/:username',
@@ -211,7 +211,7 @@ app.get(
  * GET request to get a user's favorites by username
  * @async
  * @param {string} username
- * @returns {Promise<Array>} the user's favorites data from the database
+ * @returns {Promise} the user's favorites data from the database
  */
 app.get(
   '/users/:username/favorites',
@@ -235,7 +235,7 @@ app.get(
  * @param {string} Password from input
  * @param {string} Email from input
  * @param {Date} Birthday from input
- * @returns {Promise<Object>} the users account information object
+ * @returns {Promise} the users account information object
  */
 app.post(
   '/users',
@@ -293,7 +293,7 @@ app.post(
  * @async
  * @param {string} username
  * @param {string} movieId
- * @returns {Promise<Object>} the updated user information with new favorite
+ * @returns {Promise} the updated user information with new favorite
  */
 app.put(
   '/users/:username/movies/:movieId',
@@ -317,7 +317,7 @@ app.put(
  * @param {string}Password
  * @param {string}Email
  * @param {Date}Birthday
- * @returns {Promise<Object>} the updated user information from the database
+ * @returns {Promise} the updated user information from the database
  */
 app.put(
   '/users/:username',
@@ -357,7 +357,7 @@ app.put(
  * @async
  * @param {string} username
  * @param {string} movieId
- * @returns {Promise<Object>} the new user object with the movie removed from their favorites
+ * @returns {Promise} the new user object with the movie removed from their favorites
  */
 app.delete(
   '/users/:username/movies/:movieId',
@@ -381,9 +381,8 @@ app.delete(
  * DELETE request to delete an account by username
  * @async
  * @param {string} username
- * @returns {Promise<string>} confirmation that the user was deleted
+ * @returns {Promise} confirmation string that the user was deleted
  */
-
 app.delete(
   '/users/:username',
   passport.authenticate('jwt', { session: false }),
