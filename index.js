@@ -29,11 +29,6 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Actors = Models.Actor;
 
-//connects the application to our mongodb database//
-/*mongoose.connect('mongodb://localhost:27017/movie-findr-db', {
-,  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});*/
 //Code that connects to our actual database//
 
 mongoose.connect(process.env.CONNECTION_URI, {
@@ -47,10 +42,16 @@ app.use(morgan('common'));
 
 //GET Requests//
 //Home page, in future will send you to index page//
+
 app.get('/', (req, res) => {
   res.send('Currently a test page');
 });
 
+/**
+ * GET request to get all movies from the database
+ * @async
+ * @returns {Promise <Array>} Data from database
+ */
 app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
@@ -66,6 +67,13 @@ app.get(
 );
 //Accepts a title as a request parameter, to filter movies//
 //Accepts a string//
+
+/**
+ * GET request to get a movie by Title
+ * @async
+ * @param {string} Title
+ * @returns {Promise <Object>} movie object from database
+ */
 app.get(
   '/movies/:Title',
   passport.authenticate('jwt', { session: false }),
@@ -82,6 +90,7 @@ app.get(
 );
 
 //Accepts an actors ObjectId as a parameter//
+
 app.get(
   '/movies/actors/:Actors',
   passport.authenticate('jwt', { session: false }),
@@ -97,6 +106,13 @@ app.get(
 );
 
 //Accepts a Directors ObjectID as a parameter//
+
+/**
+ * GET request to get a movie by Director
+ * @async
+ * @param {string} Directors
+ * @returns {Promise <Object>} movie object from database
+ */
 app.get(
   '/movies/directors/:Directors',
   passport.authenticate('jwt', { session: false }),
@@ -112,6 +128,13 @@ app.get(
 );
 //Accepts a genre as a request parameter//
 //Accepts a string//
+
+/**
+ * GET request to get a movie by Genre Name
+ * @async
+ * @param {string} genreName
+ * @returns {Promise <Object>} movie object from database
+ */
 app.get(
   '/movies/genres/:genreName',
   passport.authenticate('jwt', { session: false }),
@@ -141,6 +164,12 @@ app.get(
   }
 );
 //get all users//
+
+/**
+ * GET request to get all users
+ * @async
+ * @returns {Promise <Array>} user data from database
+ */
 app.get(
   '/users',
   passport.authenticate('jwt', { session: false }),
@@ -156,6 +185,13 @@ app.get(
   }
 );
 //get user by username//
+
+/**
+ * GET request to get a user by their username
+ * @async
+ * @param {string} username
+ * @returns {Promise <Object>} the user's data from the database
+ */
 app.get(
   '/users/:username',
   passport.authenticate('jwt', { session: false }),
@@ -170,7 +206,13 @@ app.get(
       });
   }
 );
-//GET users favorites by username//
+
+/**
+ * GET request to get a user's favorites by username
+ * @async
+ * @param {string} username
+ * @returns {Promise <Array>} the user's favorites data from the database
+ */
 app.get(
   '/users/:username/favorites',
   passport.authenticate('jwt', { session: false }),
@@ -186,7 +228,15 @@ app.get(
   }
 );
 
-//POST Requests//
+/**
+ * POST request to create a user's account
+ * @async
+ * @param {string} Username from input
+ * @param {string} Password from input
+ * @param {string} Email from input
+ * @param {Date} Birthday from input
+ * @returns {Promise <Object>} the users account information object
+ */
 app.post(
   '/users',
   check('Username', 'Username must be 5 characters or longer').isLength({
@@ -237,6 +287,14 @@ app.post(
 );
 
 //PUT Requests//
+
+/**
+ * PUT request to get a user's favorites by username
+ * @async
+ * @param {string} username
+ * @param {string} movieId
+ * @returns {Promise <Object>} the updated user information with new favorite
+ */
 app.put(
   '/users/:username/movies/:movieId',
   passport.authenticate('jwt', { session: false }),
@@ -251,7 +309,16 @@ app.put(
   }
 );
 
-//accepts string for users username//
+/**
+ * GET request to get a user's favorites by username
+ * @async
+ * @param {string} username
+ * @param {string}Username
+ * @param {string}Password
+ * @param {string}Email
+ * @param {Date}Birthday
+ * @returns {Promise <Object>} the updated user information from the database
+ */
 app.put(
   '/users/:username',
   passport.authenticate('jwt', { session: false }),
@@ -284,7 +351,14 @@ app.put(
 );
 
 //DELETE//
-//accepts string as title of the movie//
+
+/**
+ * DELETE request to remove a movie from the users favorites
+ * @async
+ * @param {string} username
+ * @param {string} movieId
+ * @returns {Promise <Object>} the new user object with the movie removed from their favorites
+ */
 app.delete(
   '/users/:username/movies/:movieId',
   passport.authenticate('jwt', { session: false }),
@@ -303,7 +377,13 @@ app.delete(
   }
 );
 
-//accepts string as username of the user//
+/**
+ * DELETE request to delete an account by username
+ * @async
+ * @param {string} username
+ * @returns {Promise <string>} confirmation that the user was deleted
+ */
+
 app.delete(
   '/users/:username',
   passport.authenticate('jwt', { session: false }),
