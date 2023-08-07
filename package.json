@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "eslint": "^8.36.0",
+    "jsdoc": "^4.0.2",
     "nodemon": "^2.0.22"
   }
 }

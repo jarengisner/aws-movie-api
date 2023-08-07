@@ -184,7 +184,6 @@ app.get(
       });
   }
 );
-//get user by username//
 
 /**
  * GET request to get a user by their username
