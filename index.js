@@ -408,7 +408,7 @@ app.use((err, req, res, next) => {
 });
 
 //added new listen function to pull a port from the ENV variable, and if one is not found, to default to 8080?//
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 //was 0.0.0.0
 app.listen(port, '54.83.240.32', () => {
   console.log('Listening on Port ' + port);
