@@ -1,4 +1,4 @@
-import 'dotenv/config';
+require('dotenv').config();
 //imports express//
 const express = require('express');
 //imports morgan//
