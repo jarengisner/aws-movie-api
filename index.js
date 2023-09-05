@@ -410,6 +410,6 @@ app.use((err, req, res, next) => {
 //added new listen function to pull a port from the ENV variable, and if one is not found, to default to 8080?//
 const port = process.env.PORT || 8080;
 //was 0.0.0.0
-app.listen(port, '54.83.240.32', () => {
+app.listen(port, 'ec2-54-83-240-32.compute-1.amazonaws.com', () => {
   console.log('Listening on Port ' + port);
 });
